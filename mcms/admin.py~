@@ -1,0 +1,116 @@
+from django.contrib import admin
+from django.contrib.contenttypes.generic import GenericStackedInline
+
+from reversion.admin import VersionAdmin
+from mcms.models import *
+
+class PublicationAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"url4SEO": ("title",)}
+    fieldsets = [
+        (None,               {'fields': ['title','summary','body','live','url4SEO','listingOrder']}),
+        ('Publication details',    {'fields': ['authors','publisher','pubType','price','buyURL']}),
+        ('Attached media', {'fields': ['image','imageCaption','attachment','attachmentTitle','linkTitle','linkURL','linkSummary'],
+        'classes': ['collapse']}),
+    ]
+    
+    list_display = ('title', 'live','listingOrder','modifiedOn')
+    list_filter = ['modifiedOn','pubType']
+    search_fields = ['title','summary']
+    date_hierarchy = 'modifiedOn'
+    
+class ResourceAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"url4SEO": ("title",)}
+    fieldsets = [
+        (None,               {'fields': ['resourceType','title','summary','body','live','url4SEO','listingOrder']}),
+        ('Attached media', {'fields': ['image','imageCaption','attachment','attachmentTitle','linkTitle','linkURL','linkSummary'],
+        'classes': ['collapse']}),
+    ]
+    
+    list_display = ('title', 'live','listingOrder','modifiedOn')
+    list_filter = ['modifiedOn','resourceType']
+    search_fields = ['title','summary']
+    date_hierarchy = 'modifiedOn'
+
+class ArticleAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"url4SEO": ("title",)}
+    fieldsets = [
+        (None,               {'fields': ['category','title','summary','body','live','url4SEO','listingOrder']}),
+        ('Attached media', {'fields': ['image','imageCaption','attachment','attachmentTitle','linkTitle','linkURL','linkSummary'],
+        'classes': ['collapse']}),
+    ]
+    
+    list_display = ('title', 'live','listingOrder','modifiedOn')
+    list_filter = ['modifiedOn','category']
+    search_fields = ['title','summary']
+    date_hierarchy = 'modifiedOn'
+    
+class ProjectArticleAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"url4SEO": ("title",)}
+    fieldsets = [
+        (None,               {'fields': ['project','title','summary','body','live','url4SEO','listingOrder']}),
+        ('Attached media', {'fields': ['image','imageCaption','attachment','attachmentTitle','linkTitle','linkURL','linkSummary'],
+        'classes': ['collapse']}),
+    ]
+    
+    list_display = ('title', 'live','listingOrder','modifiedOn')
+    list_filter = ['modifiedOn','project']
+    search_fields = ['title','summary']
+    date_hierarchy = 'modifiedOn'
+
+
+class EventAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"url4SEO": ("title",)}
+    fieldsets = [
+        (None,               {'fields': ['title','summary','body','startDate','endDate','live','url4SEO','listingOrder']}),
+        ('Attached media', {'fields': ['image','imageCaption','attachment','attachmentTitle','linkTitle','linkURL','linkSummary'],
+        'classes': ['collapse']}),
+    ]
+    
+    list_display = ('title','startDate', 'live','listingOrder','modifiedOn')
+    list_filter = ['modifiedOn']
+    search_fields = ['title','summary']
+    date_hierarchy = 'modifiedOn'
+    
+
+class ProjectAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"url4SEO": ("title",)}
+
+    fieldsets = [
+        (None,               {'fields': ['title','summary','logo','team','manager','live','url4SEO','listingOrder','panelColor']}),
+        ('Attached media', {'fields': ['attachment','attachmentTitle'],
+        'classes': ['collapse']}),
+    ]
+    
+    list_display = ('title', 'live','listingOrder','modifiedOn')
+    list_filter = ['modifiedOn']
+    search_fields = ['title','summary']
+    date_hierarchy = 'modifiedOn'
+    
+
+class AuthorAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"url4SEO": ("firstName","lastName")}
+    
+
+class TeamAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"url4SEO": ("title",)}
+
+admin.site.register(Article, ArticleAdmin)
+admin.site.register(Author, AuthorAdmin)
+admin.site.register(Category)
+admin.site.register(Team, TeamAdmin)
+admin.site.register(Event, EventAdmin)
+admin.site.register(Project,ProjectAdmin)
+admin.site.register(ProjectArticle, ProjectArticleAdmin)
+admin.site.register(Publication,PublicationAdmin)
+admin.site.register(Resource,ResourceAdmin)
+
+
+"""
+class ChildModelAdmin(VersionAdmin):
+    
+    inlines = RelatedModelInline, GenericRelatedInline,
+    
+    list_display = ("parent_name", "child_name",)
+    
+    list_editable = ("child_name",)
+    """
